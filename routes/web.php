@@ -14,5 +14,3 @@ Route::get('/', function () {
         'rooms' => MobileRoom::latest()->get()
     ]);
 });
-
-//Route::inertia('/', 'welcome')->name('home');
