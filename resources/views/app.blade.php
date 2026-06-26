@@ -17,6 +17,22 @@
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">
+        <native:top-bar title="Meridian Hotel" show-navigation-icon="true" />
+
+        <native:side-nav>
+            <native:side-nav-header title="About Developer" subtitle="Abdo" icon="person" />
+            <native:side-nav-item id="dev-site" label="Official Site" icon="public" url="https://abdoab.dev" />
+            <native:side-nav-item id="dev-contact" label="Contact: 0937848785" icon="contacts" url="tel:0937848785" />
+            <native:side-nav-item id="dev-email" label="Email: hireab11@gmail.com" icon="mail" url="mailto:hireab11@gmail.com" />
+        </native:side-nav>
+
+        <native:bottom-nav label-visibility="labeled">
+            <native:bottom-nav-item id="home" icon="home" label="Home" url="/" :active="request()->is('/')" />
+            <native:bottom-nav-item id="rooms" icon="hotel" label="Rooms" url="/rooms" :active="request()->is('rooms*')" />
+            <native:bottom-nav-item id="about" icon="info" label="About" url="/about" :active="request()->is('about*')" />
+            <native:bottom-nav-item id="contactus" icon="phone" label="Contact Us" url="/contactus" :active="request()->is('contactus*')" />
+        </native:bottom-nav>
+
         <x-inertia::app />
     </body>
 </html>
