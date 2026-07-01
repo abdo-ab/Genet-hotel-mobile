@@ -2,6 +2,8 @@ name: apk-release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   workflow_dispatch:
@@ -108,9 +110,26 @@ jobs:
           name: Genet-hotel-v1
           path: release/Genet-hotel-v1.apk
 
+      - name: Set release metadata
+        id: release_meta
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "name=Release ${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=apk-build-${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+            echo "name=APK Build ${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Upload release asset
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.release_meta.outputs.tag }}
+          name: ${{ steps.release_meta.outputs.name }}
+          prerelease: ${{ steps.release_meta.outputs.prerelease == 'true' }}
+          target_commitish: ${{ github.sha }}
           files: release/Genet-hotel-v1.apk
           generate_release_notes: true
